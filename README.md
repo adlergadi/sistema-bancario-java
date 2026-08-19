@@ -49,7 +49,7 @@ src/
 ├── app/
 │   └── Main.java
 │
-└── main.java.domain/
+└── domain/
     ├── Autenticavel.java
     ├── Banco.java
     ├── Conta.java
