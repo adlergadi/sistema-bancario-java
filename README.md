@@ -164,7 +164,7 @@ TARIFA
 ## Exemplo de uso
 
 ```java
-Banco banco = new Banco("Banco UnDF", "001");
+Banco banco = new Banco("Banco", "001");
 
 TitularConta titular = new TitularConta(
     "Adler Gadioli",
