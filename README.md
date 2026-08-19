@@ -224,7 +224,7 @@ app.Main
 A partir da pasta que contém o diretório `src`:
 
 ```bash
-javac -d out src/main.java.domain/*.java src/app/Main.java
+javac -d out src/domain/*.java src/app/Main.java
 java -cp out app.Main
 ```
 
