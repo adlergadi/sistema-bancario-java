@@ -49,7 +49,7 @@ src/
 ├── app/
 │   └── Main.java
 │
-└── domain/
+└── main.java.domain/
     ├── Autenticavel.java
     ├── Banco.java
     ├── Conta.java
@@ -212,7 +212,7 @@ A classe `Main` apresenta um cenário de teste contendo:
 
 1. Clone este repositório.
 2. Abra o projeto na sua IDE.
-3. Certifique-se de que os arquivos estejam organizados conforme os pacotes `app` e `domain`.
+3. Certifique-se de que os arquivos estejam organizados conforme os pacotes `app` e `main.java.domain`.
 4. Execute a classe:
 
 ```text
@@ -224,7 +224,7 @@ app.Main
 A partir da pasta que contém o diretório `src`:
 
 ```bash
-javac -d out src/domain/*.java src/app/Main.java
+javac -d out src/main.java.domain/*.java src/app/Main.java
 java -cp out app.Main
 ```
 
