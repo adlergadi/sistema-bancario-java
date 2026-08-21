@@ -1,5 +1,6 @@
 package domain;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +35,7 @@ public class Banco {
         return null;
     }
 
-    public boolean transferir(String contaOrigem, String contaDestino, double valor) {
+    public boolean transferir(String contaOrigem, String contaDestino, BigDecimal valor) {
         Conta origem = buscarConta(contaOrigem);
         Conta destino = buscarConta(contaDestino);
 

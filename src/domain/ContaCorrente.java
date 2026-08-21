@@ -1,16 +1,18 @@
 package domain;
 
+import java.math.BigDecimal;
+
 public class ContaCorrente extends Conta{
-    private double limite;
-    private double taxaMensal;
+    private BigDecimal limite;
+    private BigDecimal taxaMensal;
 
     public ContaCorrente(
             TitularConta titular,
             String numeroConta,
             String agencia,
             String senha,
-            double limite,
-            double taxaMensal
+            BigDecimal limite,
+            BigDecimal taxaMensal
     ) {
         super(titular, numeroConta, agencia, senha);
         this.limite = Math.max(limite, 0);
@@ -18,7 +20,7 @@ public class ContaCorrente extends Conta{
     }
 
     @Override
-    protected double getLimiteAdicional() {
+    protected BigDecimal getLimiteAdicional() {
         return limite;
     }
 

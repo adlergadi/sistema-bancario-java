@@ -1,5 +1,7 @@
 package domain;
 
+import java.math.BigDecimal;
+
 public class ContaPoupanca extends Conta {
     private double taxaRendimento;
 
@@ -16,8 +18,14 @@ public class ContaPoupanca extends Conta {
 
     @Override
     public void processarFechamentoMensal() {
-        if (podeMovimentar() && getSaldo() > 0 && taxaRendimento > 0) {
-            double rendimento = getSaldo() * taxaRendimento / 100;
+        if (podeMovimentar()
+                && getSaldo().compareTo(BigDecimal.ZERO) > 0
+                && taxaRendimento > 0) {
+
+            BigDecimal rendimento = getSaldo()
+                    .multiply(BigDecimal.valueOf(taxaRendimento))
+                    .divide(BigDecimal.valueOf(100));
+
             creditar(rendimento, TipoTransacao.RENDIMENTO, "Rendimento mensal da poupança");
         }
     }

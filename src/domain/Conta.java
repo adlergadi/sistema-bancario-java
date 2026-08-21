@@ -1,5 +1,6 @@
 package domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +12,7 @@ public abstract class Conta implements Autenticavel {
     private final String agencia;
     private final LocalDate dataCriacao;
     private String senha;
-    private double saldo;
+    private BigDecimal saldo;
     private StatusConta status;
     private final List<Transacao> extrato;
 
@@ -22,6 +23,7 @@ public abstract class Conta implements Autenticavel {
         this.senha = senha;
         this.dataCriacao = LocalDate.now();
         this.status = StatusConta.ATIVA;
+        this.saldo = BigDecimal.ZERO;
         this.extrato = new ArrayList<>();
     }
 
@@ -39,11 +41,11 @@ public abstract class Conta implements Autenticavel {
         return true;
     }
 
-    public boolean depositar(double valor) {
+    public boolean depositar(BigDecimal valor) {
         return depositar(valor, "Depósito em conta");
     }
 
-    public boolean depositar(double valor, String descricao) {
+    public boolean depositar(BigDecimal valor, String descricao) {
         if (!podeMovimentar() || valorInvalido(valor)) {
             return false;
         }
@@ -52,7 +54,7 @@ public abstract class Conta implements Autenticavel {
         return true;
     }
 
-    public boolean sacar(double valor) {
+    public boolean sacar(BigDecimal valor) {
         if (!podeMovimentar() || valorInvalido(valor) || !possuiSaldoDisponivel(valor)) {
             return false;
         }
@@ -61,7 +63,7 @@ public abstract class Conta implements Autenticavel {
         return true;
     }
 
-    public boolean transferir(Conta contaDestino, double valor) {
+    public boolean transferir(Conta contaDestino, BigDecimal valor) {
         if (contaDestino == null || contaDestino == this) {
             return false;
         }
@@ -74,8 +76,8 @@ public abstract class Conta implements Autenticavel {
             return false;
         }
 
-        saldo -= valor;
-        contaDestino.saldo += valor;
+        saldo = saldo.subtract(valor);
+        contaDestino.saldo = contaDestino.saldo.add(valor);
 
         registrarTransacao(
                 TipoTransacao.TRANSFERENCIA_ENVIADA,
@@ -111,7 +113,7 @@ public abstract class Conta implements Autenticavel {
     }
 
     public boolean encerrar() {
-        if (status == StatusConta.ENCERRADA || saldo != 0) {
+        if (status == StatusConta.ENCERRADA || saldo.compareTo(BigDecimal.ZERO) != 0) {
             return false;
         }
 
@@ -132,38 +134,38 @@ public abstract class Conta implements Autenticavel {
         System.out.printf("Saldo disponível: R$ %.2f%n", getSaldoDisponivel());
     }
 
-    protected final void creditar(double valor, TipoTransacao tipo, String descricao) {
-        saldo += valor;
+    protected final void creditar(BigDecimal valor, TipoTransacao tipo, String descricao) {
+        saldo = saldo.add(valor);
         registrarTransacao(tipo, valor, descricao);
     }
 
-    protected final boolean debitar(double valor, TipoTransacao tipo, String descricao) {
+    protected final boolean debitar(BigDecimal valor, TipoTransacao tipo, String descricao) {
         if (valorInvalido(valor) || !possuiSaldoDisponivel(valor)) {
             return false;
         }
 
-        saldo -= valor;
+        saldo = saldo.subtract(valor);
         registrarTransacao(tipo, valor, descricao);
         return true;
     }
 
-    protected double getLimiteAdicional() {
-        return 0;
+    protected BigDecimal getLimiteAdicional() {
+        return BigDecimal.ZERO;
     }
 
     protected boolean podeMovimentar() {
         return status == StatusConta.ATIVA;
     }
 
-    private boolean possuiSaldoDisponivel(double valor) {
-        return getSaldoDisponivel() >= valor;
+    private boolean possuiSaldoDisponivel(BigDecimal valor) {
+        return getSaldoDisponivel().compareTo(valor) >= 0;
     }
 
-    private boolean valorInvalido(double valor) {
-        return valor <= 0;
+    private boolean valorInvalido(BigDecimal valor) {
+        return valor == null || valor.compareTo(BigDecimal.ZERO) <= 0;
     }
 
-    private void registrarTransacao(TipoTransacao tipo, double valor, String descricao) {
+    private void registrarTransacao(TipoTransacao tipo, BigDecimal valor, String descricao) {
         extrato.add(new Transacao(tipo, valor, descricao));
     }
 
@@ -187,12 +189,12 @@ public abstract class Conta implements Autenticavel {
         return dataCriacao;
     }
 
-    public double getSaldo() {
+    public BigDecimal getSaldo() {
         return saldo;
     }
 
-    public double getSaldoDisponivel() {
-        return saldo + getLimiteAdicional();
+    public BigDecimal getSaldoDisponivel() {
+        return saldo.add(getLimiteAdicional());
     }
 
     public StatusConta getStatus() {

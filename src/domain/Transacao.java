@@ -1,15 +1,16 @@
 package domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Transacao {
     private final LocalDateTime dataHora;
     private final TipoTransacao tipo;
-    private final double valor;
+    private final BigDecimal valor;
     private final String descricao;
 
-    public Transacao(TipoTransacao tipo, double valor, String descricao) {
+    public Transacao(TipoTransacao tipo, BigDecimal valor, String descricao) {
         this.dataHora = LocalDateTime.now();
         this.tipo = tipo;
         this.valor = valor;
@@ -24,7 +25,7 @@ public class Transacao {
         return tipo;
     }
 
-    public double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 

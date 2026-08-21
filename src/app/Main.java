@@ -2,6 +2,7 @@ package app;
 
 import domain.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Main {
@@ -44,12 +45,12 @@ public class Main {
         Autenticavel acesso = contaCorrenteAdler;
         System.out.println("Autenticação válida: " + acesso.autenticar("1234"));
 
-        contaCorrenteAdler.depositar(1000.00);
-        contaCorrenteAdler.depositar(300.00, "Depósito identificado: salário");
-        contaPoupancaEduarda.depositar(800.00);
+        contaCorrenteAdler.depositar(new BigDecimal(1000));
+        contaCorrenteAdler.depositar(new BigDecimal(300), "Depósito identificado: salário");
+        contaPoupancaEduarda.depositar(new BigDecimal(800));
 
-        contaCorrenteAdler.transferir( contaPoupancaEduarda, 250.00);
-        contaPoupancaEduarda.sacar(100.00);
+        contaCorrenteAdler.transferir( contaPoupancaEduarda, new BigDecimal(250));
+        contaPoupancaEduarda.sacar(new BigDecimal(100));
 
 
         for (Conta conta : banco.getContas()) {
