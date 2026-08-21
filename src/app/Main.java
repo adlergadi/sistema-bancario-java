@@ -27,8 +27,8 @@ public class Main {
                 "1001",
                 "0001",
                 "1234",
-                500.00,
-                25.00
+                new BigDecimal(500),
+                new BigDecimal(25)
         );
 
         Conta contaPoupancaEduarda = new ContaPoupanca(

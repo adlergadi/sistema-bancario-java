@@ -2,7 +2,7 @@ package domain;
 
 import java.math.BigDecimal;
 
-public class ContaCorrente extends Conta{
+public class ContaCorrente extends Conta {
     private BigDecimal limite;
     private BigDecimal taxaMensal;
 
@@ -15,8 +15,14 @@ public class ContaCorrente extends Conta{
             BigDecimal taxaMensal
     ) {
         super(titular, numeroConta, agencia, senha);
-        this.limite = Math.max(limite, 0);
-        this.taxaMensal = Math.max(taxaMensal, 0);
+        this.limite = limite != null
+                && limite.compareTo(BigDecimal.ZERO) >= 0
+                ? limite
+                : BigDecimal.ZERO;
+        this.taxaMensal = taxaMensal != null
+                && taxaMensal.compareTo(BigDecimal.ZERO) >= 0
+                ? taxaMensal
+                : BigDecimal.ZERO;
     }
 
     @Override
@@ -26,7 +32,8 @@ public class ContaCorrente extends Conta{
 
     @Override
     public void processarFechamentoMensal() {
-        if (podeMovimentar() && taxaMensal > 0) {
+        if (podeMovimentar()
+                && taxaMensal.compareTo(BigDecimal.ZERO) > 0) {
             debitar(taxaMensal, TipoTransacao.TARIFA, "Cobrança da tarifa mensal");
         }
     }
@@ -36,22 +43,24 @@ public class ContaCorrente extends Conta{
         return "Conta corrente";
     }
 
-    public double getLimite() {
+    public BigDecimal getLimite() {
         return limite;
     }
 
-    public void setLimite(double limite) {
-        if (limite >= 0) {
+    public void setLimite(BigDecimal limite) {
+        if (limite != null
+                && limite.compareTo(BigDecimal.ZERO) >= 0) {
             this.limite = limite;
         }
     }
 
-    public double getTaxaMensal() {
+    public BigDecimal getTaxaMensal() {
         return taxaMensal;
     }
 
-    public void setTaxaMensal(double taxaMensal) {
-        if (taxaMensal >= 0) {
+    public void setTaxaMensal(BigDecimal taxaMensal) {
+        if (taxaMensal != null
+                && taxaMensal.compareTo(BigDecimal.ZERO) >= 0) {
             this.taxaMensal = taxaMensal;
         }
     }
